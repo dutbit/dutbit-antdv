@@ -1,0 +1,23 @@
+{
+  "name": "dutbit-antdv",
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "ant-design-vue": "^2.2.8",
+    "axios": "^0.25.0",
+    "crypto-js": "^4.1.1",
+    "vue": "^3.2.16",
+    "vue-axios": "^3.4.0",
+    "vue-request": "^1.2.4",
+    "vue-router": "^4.0.12"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^2.1.0",
+    "unplugin-vue-components": "^0.17.14",
+    "vite": "^2.7.13"
+  }
+}
