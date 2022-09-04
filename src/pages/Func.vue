@@ -24,7 +24,8 @@
           <template #title>
             <span><CodeOutlined /> 控制台 </span>
           </template>
-          <a-menu-item key="9"><router-link to="/func/enroll-man">报名系统</router-link></a-menu-item>
+          <a-menu-item key="9"><router-link to="/func/enroll-query">报名查询</router-link></a-menu-item>
+          <a-menu-item key="9"><router-link to="/func/enroll-man">报名管理</router-link></a-menu-item>
           <a-menu-item key="12"><router-link to="/func/dayImage-man">日历图管理</router-link></a-menu-item>
           <a-menu-item key="13">option12</a-menu-item>
           <a-menu-item-group key="g1">
@@ -56,7 +57,15 @@ export default {
   computed: {},
   methods: {},
   provide() {
-    return {}
+    return {
+      facultyList: [
+        '新媒体平台',
+        '新媒体视频号',
+        '光in影像工作室',
+        '平面设计工作室',
+        '比特网络工作室'
+      ]
+    }
   },
   mounted() {
     this.$router.beforeEach((to, from) => {

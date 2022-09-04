@@ -98,13 +98,13 @@ export default {
         // console.log(err.config)
       }
     )
-    this.$router.beforeEach((to, from) => {
-      // console.log(to)
-      document.title = to.meta?.pageTitle
-      if (to.meta?.isNeedLogin ?? true) {
-        if (!window.localStorage.getItem('Authorization')) return '/login'
-      }
-    })
+    // this.$router.beforeEach((to, from) => {
+    //   // console.log(to)
+    //   document.title = to.meta?.pageTitle
+    //   if (to.meta?.isNeedLogin ?? true) {
+    //     if (!window.localStorage.getItem('Authorization')) return '/login'
+    //   }
+    // })
   },
 }
 </script>

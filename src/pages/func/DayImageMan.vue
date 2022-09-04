@@ -102,6 +102,7 @@ export default {
     },
     toUrlImg(filename) {
       return `/dayImage/${this.nameDir}/${filename}`
+      // return `${this.axiosBaseURL}/day-image/img/${this.nameDir}/${filename}`
     },
     delImg(filename) {
       this.$http.get(`/day-image/delete/${this.nameDir}/${filename}`).then(() => {

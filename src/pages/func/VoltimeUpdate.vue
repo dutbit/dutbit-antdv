@@ -21,7 +21,7 @@
 
   <hr />
   <a-space size="small">
-    <a-upload class="upload" :file-list="fileList" :remove="handleRemove" :before-upload="beforeUpload">
+    <a-upload class="upload" :file-list="fileList" :remove="handleRemove" :before-upload="beforeUpload" accept=".csv">
       <a-button><UploadOutlined />选择文件</a-button>
     </a-upload>
     <a-button :disabled="fileList.length == 0" @click="onRefresh"> 刷新 </a-button>
