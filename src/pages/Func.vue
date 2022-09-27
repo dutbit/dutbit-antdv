@@ -2,14 +2,14 @@
   <a-layout style="margin: 24px 24px 0; background: #fff; box-shadow: 2px 2px 8px 2px #ccc">
     <a-layout-sider width="150" style="background: #fff">
       <a-menu mode="inline" style="height: 100%" v-model:openKeys="openKeys" v-model:selectedKeys="selectedKeys">
-        <a-sub-menu key="sub1">
+        <a-sub-menu key="school-app">
           <template #title>
             <span><SmileOutlined /> 校园应用</span>
           </template>
-          <a-menu-item key="1"><router-link to="/func">公告板</router-link></a-menu-item>
-          <a-menu-item key="2"><router-link to="/func/enroll">报名</router-link></a-menu-item>
-          <a-menu-item key="3"><router-link to="/func/vote">投票</router-link></a-menu-item>
-          <a-menu-item key="4">社团</a-menu-item>
+          <a-menu-item key="board"><router-link to="/func">公告板</router-link></a-menu-item>
+          <a-menu-item key="enroll"><router-link to="/func/enroll">报名</router-link></a-menu-item>
+          <a-menu-item key="vote"><router-link to="/func/vote">投票</router-link></a-menu-item>
+          <a-menu-item key="group">社团</a-menu-item>
         </a-sub-menu>
         <a-sub-menu key="sub2">
           <template #title>
@@ -20,23 +20,22 @@
           <a-menu-item key="7">option7</a-menu-item>
           <a-menu-item key="8">option8</a-menu-item>
         </a-sub-menu>
-        <a-sub-menu key="sub3">
+        <a-sub-menu key="console">
           <template #title>
             <span><CodeOutlined /> 控制台 </span>
           </template>
-          <a-menu-item key="9"><router-link to="/func/enroll-query">报名查询</router-link></a-menu-item>
-          <a-menu-item key="9"><router-link to="/func/enroll-man">报名管理</router-link></a-menu-item>
-          <a-menu-item key="12"><router-link to="/func/dayImage-man">日历图管理</router-link></a-menu-item>
-          <a-menu-item key="13">option12</a-menu-item>
-          <a-menu-item-group key="g1">
+          <a-menu-item key="enroll-query"><router-link to="/func/enroll-query">报名查询</router-link></a-menu-item>
+          <a-menu-item key="enroll-man"><router-link to="/func/enroll-man">报名管理</router-link></a-menu-item>
+          <a-menu-item key="dayimg-man"><router-link to="/func/dayImage-man">日历图管理</router-link></a-menu-item>
+          <a-menu-item-group key="point">
             <template #title>积分查询</template>
-            <a-menu-item key="g1-1"><router-link to="/func/point-show">浏览</router-link></a-menu-item>
-            <a-menu-item key="g1-2"><router-link to="/func/point-update">更新</router-link></a-menu-item>
+            <a-menu-item key="point-query"><router-link to="/func/point-show">浏览</router-link></a-menu-item>
+            <a-menu-item key="point-update"><router-link to="/func/point-update">更新</router-link></a-menu-item>
           </a-menu-item-group>
-          <a-menu-item-group key="g2">
+          <a-menu-item-group key="vol">
             <template #title>志愿时长</template>
-            <a-menu-item key="10"><router-link to="/func/voltime-update">更新</router-link></a-menu-item>
-            <a-menu-item key="14"><router-link to="/func/voltime-edit">编辑</router-link></a-menu-item>
+            <a-menu-item key="vol-query"><router-link to="/func/voltime-update">更新</router-link></a-menu-item>
+            <a-menu-item key="vol-update"><router-link to="/func/voltime-edit">编辑</router-link></a-menu-item>
           </a-menu-item-group>
         </a-sub-menu>
       </a-menu>

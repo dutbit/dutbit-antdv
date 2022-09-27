@@ -7,41 +7,32 @@
     <span style="float: right"><a href="#">数据修改</a></span>
   </div>
   <div style="padding: 0 14px 14px">
-    <a-input-search
-      v-model:value="searchText"
-      placeholder="搜索姓名或学号"
-      style="width: 200px"
-      allowClear
-      @search="onSearch"
-    />
+    <a-input-search v-model:value="searchText" placeholder="搜索姓名或学号" style="width: 200px" allowClear
+      @search="onSearch" />
   </div>
-  <a-table
-    size="middle"
-    :columns="columns"
-    :dataSource="lstRecords"
-    :pagination="pagination"
-    :loading="isLoading"
-    row-key="id"
-    @change="onTableChange"
-  >
+  <a-table size="middle" :columns="columns" :dataSource="lstRecords" :pagination="pagination" :loading="isLoading"
+    row-key="id" @change="onTableChange">
   </a-table>
 </template>
 <script>
 import { defineComponent, computed, ref } from 'vue'
 import { usePagination } from 'vue-request'
 import axios from 'axios'
+import { number } from '_vue-types@3.0.2@vue-types'
 
 export default defineComponent({
   setup() {
     const searchText = ref('')
-    const funService = (params) => axios.get('/voltime-man/get-records', { params })
+    const funService = (params) => axios.post('/voltime-man', { params })
     const {
       data: dataAxios,
       loading: isLoading,
       current,
       pageSize,
       run,
-    } = usePagination(funService, { formatResult: (res) => res.data })
+    } = usePagination(funService, {
+      formatResult: (res) => res.data.lstVoltimes,
+    })
 
     // computed
     const lstRecords = computed(() => dataAxios.value?.rows) // ?. 是必需的
@@ -71,7 +62,7 @@ export default defineComponent({
         { title: '任务名称', dataIndex: 'activity_name' },
         { title: '组织学院', dataIndex: 'activity_faculty' },
         { title: '队伍名称', dataIndex: 'team' },
-        { title: '时间', dataIndex: 'activity_DATE' },
+        { title: '时间', dataIndex: 'activity_date' },
         { title: '组织人', dataIndex: 'duty_person' },
         { title: '备注', dataIndex: 'remark' },
       ],

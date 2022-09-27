@@ -22,13 +22,9 @@
         <a-sub-menu>
           <template #icon><SettingOutlined /></template>
           <template #title>其它</template>
-          <a-menu-item-group title="Item 1">
-            <a-menu-item key="setting:1"><router-link to="/login">登录</router-link></a-menu-item>
-            <a-menu-item key="setting:2" @click="logout">登出</a-menu-item>
-          </a-menu-item-group>
-          <a-menu-item-group title="Item 2">
-            <a-menu-item key="setting:3">Option 3</a-menu-item>
-            <a-menu-item key="setting:4">Option 4</a-menu-item>
+          <a-menu-item-group title="操作">
+            <a-menu-item key="login"><router-link to="/login">登录</router-link></a-menu-item>
+            <a-menu-item key="logout" @click="logout">登出</a-menu-item>
           </a-menu-item-group>
         </a-sub-menu>
         <a-menu-item key="dlut">
@@ -45,7 +41,7 @@
 </template>
 
 <script>
-import { notification } from 'ant-design-vue'
+import { message, notification } from 'ant-design-vue'
 export default {
   components: {},
   data() {
@@ -56,6 +52,8 @@ export default {
   methods: {
     logout() {
       window.localStorage.removeItem('Authorization')
+      notification.info({message: '提示', description: '已经登出...'})
+      this.$router.replace('/login')
     },
   },
   provide() {
@@ -76,11 +74,15 @@ export default {
         return res
       },
       (err) => {
-        console.log('axios错误:' + err)
         if (err.response) {
           // The request was made and the server responded with a status code
           // that falls out of the range of 2xx
-          notification.error({ message: '' + err, description: err.response.data })
+          if (err.response.status == 462) {
+            notification.error({ message: '出错啦！', description: '用户名或密码错误'})
+          }
+          if (err.response.status == 463) {
+            notification.error({ message: '出错啦！', description: ''})
+          }
           console.log(`成功请求，但响应状态码为${err.response.status}，响应内容如下`)
           console.log(err.response.data)
           // console.log(err.response.headers)
@@ -89,22 +91,16 @@ export default {
           // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
           // http.ClientRequest in node.js
           notification.error({ message: '网络错误: 无响应' })
-          console.log('成功请求，但无响应，请求内容如下')
-          console.log(err.request)
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log('请求失败：', err.message)
         }
-        // console.log(err.config)
       }
     )
-    // this.$router.beforeEach((to, from) => {
-    //   // console.log(to)
-    //   document.title = to.meta?.pageTitle
-    //   if (to.meta?.isNeedLogin ?? true) {
-    //     if (!window.localStorage.getItem('Authorization')) return '/login'
-    //   }
-    // })
+    this.$router.beforeEach((to, from) => {
+      // console.log(to)
+      document.title = to.meta?.pageTitle
+      if (to.meta?.isNeedLogin ?? true) {
+        if (!window.localStorage.getItem('Authorization')) return '/login'
+      }
+    })
   },
 }
 </script>

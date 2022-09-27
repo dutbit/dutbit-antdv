@@ -7,17 +7,9 @@
         <a-divider type="vertical" />
         <a @click="editCurrentDept(record.id)">编辑</a>
         <a-divider type="vertical" />
-        <a-popconfirm
-          title="你确定要删除该部门吗？"
-          ok-text="是"
-          cancel-text="否"
-          @confirm="deleteCurrentDept(record.id)"
-        >
+        <a-popconfirm title="你确定要删除该部门吗？" ok-text="是" cancel-text="否" @confirm="deleteCurrentDept(record.id)">
           <a-tooltip placement="bottom">
-            <template #title
-              >注意！出于安全考虑，该部门<b style="color: red">不会被彻底删除</b
-              >， 而是会被打上deleted标签，可以在恢复列表中找到该记录</template
-            >
+            <template #title>注意！出于安全考虑，该部门<b style="color: red">不会被彻底删除</b>， 而是会被打上deleted标签，可以在恢复列表中找到该记录</template>
             <a href="#">删除</a>
           </a-tooltip>
         </a-popconfirm>
@@ -32,11 +24,7 @@
     </a-modal>
   </a-table>
   <h1>批次管理</h1>
-  <a-table
-    :dataSource="turnData.data"
-    :columns="turnColumns"
-    style="margin-top: 10px"
-  >
+  <a-table :dataSource="turnData.data" :columns="turnColumns" style="margin-top: 10px">
     <template #bodyCell="{ column, record }">
       <template v-if="column.key === 'activated'">
         {{ record.activated ? '正在进行' : '已关闭' }}
@@ -50,60 +38,32 @@
         <a-divider type="vertical" />
         <a @click="closeCurrentTurn(record.id)">关闭</a>
         <a-divider type="vertical" />
-        <a-popconfirm
-          title="你确定要删除该批次吗？"
-          ok-text="是"
-          cancel-text="否"
-          @confirm="deleteCurrentTurn(record.id)"
-        >
+        <a-popconfirm title="你确定要删除该批次吗？" ok-text="是" cancel-text="否" @confirm="deleteCurrentTurn(record.id)">
           <a-tooltip placement="bottom">
-            <template #title
-              >注意！出于安全考虑，该批次<b style="color: red">不会被彻底删除</b
-              >， 而是会被打上deleted标签，可以在恢复列表中找到该记录</template
-            >
+            <template #title>注意！出于安全考虑，该批次<b style="color: red">不会被彻底删除</b>， 而是会被打上deleted标签，可以在恢复列表中找到该记录</template>
             <a href="#">删除</a>
           </a-tooltip>
         </a-popconfirm>
       </template>
     </template>
   </a-table>
-  <a-modal
-    :visible="editTurnVisible"
-    title="批次名称"
-    @ok="handleEditCurrentTurn"
-    @cancel="editTurnVisible = false"
-    :destroyOnClose="true"
-  >
+  <a-modal :visible="editTurnVisible" title="批次名称" @ok="handleEditCurrentTurn" @cancel="editTurnVisible = false"
+    :destroyOnClose="true">
     <span>请输入新的批次名称:</span>
     <a-input v-model:value="newTurnName" show-count :maxlength="20"></a-input>
   </a-modal>
-  <a-modal
-    :visible="createTurnVisible"
-    title="批次名称"
-    @ok="handleCreateNewTurn"
-    @cancel="createTurnVisible = false"
-    :destroyOnClose="true"
-  >
+  <a-modal :visible="createTurnVisible" title="批次名称" @ok="handleCreateNewTurn" @cancel="createTurnVisible = false"
+    :destroyOnClose="true">
     <span>请输入新的批次名称:</span>
     <a-input v-model:value="newTurnName" show-count :maxlength="20"></a-input>
   </a-modal>
-  <a-modal
-    :visible="editDeptVisible"
-    title="部门名称"
-    @ok="handleEditCurrentDept"
-    @cancel="editDeptVisible = false"
-    :destroyOnClose="true"
-  >
+  <a-modal :visible="editDeptVisible" title="部门名称" @ok="handleEditCurrentDept" @cancel="editDeptVisible = false"
+    :destroyOnClose="true">
     <span>请输入新的部门名称:</span>
     <a-input v-model:value="newDeptName" show-count :maxlength="10"></a-input>
   </a-modal>
-  <a-modal
-    :visible="createDeptVisible"
-    title="部门名称"
-    @ok="handleCreateNewDept"
-    @cancel="createDeptVisible = false"
-    :destroyOnClose="true"
-  >
+  <a-modal :visible="createDeptVisible" title="部门名称" @ok="handleCreateNewDept" @cancel="createDeptVisible = false"
+    :destroyOnClose="true">
     <span>请输入新的部门名称:</span>
     <a-input v-model:value="newDeptName" show-count :maxlength="10"></a-input>
   </a-modal>

@@ -21,8 +21,10 @@
 
   <hr />
   <a-space size="small">
-    <a-upload class="upload" :file-list="fileList" :remove="handleRemove" :before-upload="beforeUpload" accept=".csv">
-      <a-button><UploadOutlined />选择文件</a-button>
+    <a-upload class="upload" :file-list="fileList" @remove="handleRemove" :before-upload="beforeUpload" accept=".csv">
+      <a-button>
+        <UploadOutlined />选择文件
+      </a-button>
     </a-upload>
     <a-button :disabled="fileList.length == 0" @click="onRefresh"> 刷新 </a-button>
     <a-button type="primary" :disabled="!isR4Upload" :loading="uploading" @click="handleUpload">
@@ -55,17 +57,17 @@ export default {
       lstRecords: [],
       nRowsTotal: '未知',
       columns: [
-        { title: '姓名', dataIndex: '1' },
-        { title: '性别', dataIndex: '2' },
-        { title: '学院', dataIndex: '3' },
-        { title: '学号', dataIndex: '4' },
-        { title: '时长(h)', dataIndex: '5' },
-        { title: '任务名称', dataIndex: '6' },
-        { title: '组织学院', dataIndex: '7' },
-        { title: '队伍名称', dataIndex: '8' },
-        { title: '时间', dataIndex: '9' },
-        { title: '组织人', dataIndex: '10' },
-        { title: '备注', dataIndex: '11' },
+        { title: '姓名', dataIndex: 'name' },
+        { title: '性别', dataIndex: 'sex' },
+        { title: '学院', dataIndex: 'faculty' },
+        { title: '学号', dataIndex: 'stu_id' },
+        { title: '时长(h)', dataIndex: 'duration' },
+        { title: '任务名称', dataIndex: 'activity_name' },
+        { title: '组织学院', dataIndex: 'duty_faculty' },
+        { title: '队伍名称', dataIndex: 'team' },
+        { title: '时间', dataIndex: 'date' },
+        { title: '组织人', dataIndex: 'duty_person' },
+        { title: '备注', dataIndex: 'remark' },
       ],
       pagination: { total: 0, current: 0, pageSize: 50 },
       lstErrLines: [],
@@ -92,10 +94,10 @@ export default {
     handleUpload() {
       this.uploading = true // You can use any AJAX library you like
       this.$http
-        .post('/voltime-man/update-by-array', this.lstRecords)
+        .post('/voltime-man/insert', { list: this.lstRecords })
         .then((res) => {
           this.uploading = false
-          notification.success({ message: res.data })
+          notification.success({ message: res.data.details })
         })
         .catch(() => {
           this.uploading = false
@@ -124,6 +126,8 @@ export default {
         notification.error({ message: '浏览器FileReader错误', description: reader.error })
       }
       reader.readAsText(file)
+      // 刷新表格
+      this.onTableChange()
     },
     /** @param {string} strCSV */
     csv2array(strCSV) {
@@ -138,7 +142,20 @@ export default {
         if (splits.length != 11 || lstErrItems.length) {
           this.lstErrLines.push({ msg: `行${iLine}格式错误：${lstErrItems.join('，')}`, desc: splits.join('，') })
         }
-        this.lstRecords.push([iLine, ...splits])
+        this.lstRecords.push({
+          name: splits[0],
+          sex: splits[1],
+          faculty: splits[2],
+          stu_id: splits[3],
+          duration: splits[4],
+          activity_name: splits[5],
+          duty_faculty: splits[6],
+          team: splits[7],
+          date: splits[8],
+          duty_person: splits[9],
+          remark: splits[10]
+        })
+        // lstRecords 的形式可以参考 Apipost
       }
       if (!this.lstErrLines.length) notification.success({ message: `读取到${this.lstRecords.length}条数据` })
       else notification.error({ message: `${this.lstErrLines.length}条数据存在格式错误` })
@@ -149,7 +166,7 @@ export default {
     },
   },
   mounted() {
-    this.$http.get('/voltime-man/row-total').then((res) => {
+    this.$http.get('/voltime-man/total').then((res) => {
       this.nRowsTotal = res.data.total
     })
   },
@@ -161,16 +178,20 @@ export default {
   color: gray;
   margin: 5px;
 }
+
 .upload {
   display: inline-flex;
   align-items: center;
 }
+
 .upload :deep(.ant-upload-list) {
   min-width: 15em;
 }
+
 .upload :deep(.ant-upload-list-item) {
   margin: 4px;
 }
+
 .upload :deep(.ant-upload-list-item-info) {
   padding-right: 24px;
 }
