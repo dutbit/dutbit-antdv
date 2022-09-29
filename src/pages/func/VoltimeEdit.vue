@@ -2,9 +2,9 @@
   <div style="font-size: 30px; margin: 10px 20px">
     <span> 志愿时长查询记录编辑 </span>
     <a href="/static/example.csv" style="font-size: 20px"> 样表下载 </a>
-    <span style="float: right"><a href="#">查询页面</a></span>
+    <span style="float: right"><a href="#/func/voltime-edit">查询页面</a></span>
     <span style="float: right">/</span>
-    <span style="float: right"><a href="#">数据修改</a></span>
+    <span style="float: right"><a href="#/func/voltime-edit">数据修改</a></span>
   </div>
   <div style="padding: 0 14px 14px">
     <a-input-search v-model:value="searchText" placeholder="搜索姓名或学号" style="width: 200px" allowClear
@@ -18,12 +18,11 @@
 import { defineComponent, computed, ref } from 'vue'
 import { usePagination } from 'vue-request'
 import axios from 'axios'
-import { number } from '_vue-types@3.0.2@vue-types'
 
 export default defineComponent({
   setup() {
     const searchText = ref('')
-    const funService = (params) => axios.post('/voltime-man', { params })
+    const funService = (params) => axios.post('/voltime-man/', { ...params })
     const {
       data: dataAxios,
       loading: isLoading,
@@ -35,7 +34,7 @@ export default defineComponent({
     })
 
     // computed
-    const lstRecords = computed(() => dataAxios.value?.rows) // ?. 是必需的
+    const lstRecords = computed(() => dataAxios.value) // ?. 是必需的
     const pagination = computed(() => ({
       total: dataAxios.value?.total,
       current: current.value,

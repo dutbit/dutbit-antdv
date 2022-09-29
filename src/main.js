@@ -5,7 +5,6 @@ import { message } from 'ant-design-vue'
 import App from './App.vue'
 import router from './router.js'
 import 'ant-design-vue/lib/notification/style/index.css'
-
 const app = createApp(App)
 app.use(router)
 app.use(VueAxios, axios)

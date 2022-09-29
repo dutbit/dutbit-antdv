@@ -81,7 +81,7 @@ export default {
             notification.error({ message: '出错啦！', description: '用户名或密码错误'})
           }
           if (err.response.status == 463) {
-            notification.error({ message: '出错啦！', description: ''})
+            notification.error({ message: '出错啦！', description: '登录过期！请重新登录'})
           }
           console.log(`成功请求，但响应状态码为${err.response.status}，响应内容如下`)
           console.log(err.response.data)

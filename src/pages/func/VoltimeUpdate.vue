@@ -2,9 +2,9 @@
   <div style="font-size: 30px; margin: 10px 20px">
     <span> 志愿时长查询增量更新 </span>
     <a href="/static/example.csv" style="font-size: 20px"> 样表下载 </a>
-    <span style="float: right"><a href="#">查询页面</a></span>
+    <span style="float: right"><a href="#/func/voltime-edit">查询页面</a></span>
     <span style="float: right">/</span>
-    <span style="float: right"><a href="#">数据修改</a></span>
+    <span style="float: right"><a href="#/func/voltime-edit">数据修改</a></span>
   </div>
   <a-row align="bottom">
     <a-col :span="16">
@@ -123,7 +123,7 @@ export default {
         } else this.csv2array(reader.result)
       }
       reader.onerror = () => {
-        notification.error({ message: '浏览器FileReader错误', description: reader.error })
+        notification.error({ message: '浏览器FileReader错误', description: `${reader.error}\n请尝试更换浏览器` })
       }
       reader.readAsText(file)
       // 刷新表格

@@ -27,7 +27,6 @@
           <a-menu-item key="9"><router-link to="/func/enroll-man">报名系统</router-link></a-menu-item>
           <a-menu-item key="10"><router-link to="/func/voltime-man">志愿时长管理</router-link></a-menu-item>
           <a-menu-item key="11"><router-link to="/func/dayImage-man">日历图管理</router-link></a-menu-item>
-          <a-menu-item key="12">option12</a-menu-item>
         </a-sub-menu>
       </a-menu>
     </a-layout-sider>

@@ -66,7 +66,6 @@ export default {
         return
       }
       payload.password = SHA512(payload.password).toString()
-      console.log(payload.password)
       this.$http.post('/login', payload).then((res) => {
         console.log(res)
         if (res.data.success === true) {
