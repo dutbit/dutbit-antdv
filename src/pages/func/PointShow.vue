@@ -20,8 +20,7 @@
     :loading="isLoading"
     row-key="id"
     @change="onTableChange"
-  >
-  </a-table>
+  ></a-table>
 </template>
 <script>
 import { defineComponent, computed, ref } from 'vue'

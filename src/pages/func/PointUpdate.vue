@@ -22,7 +22,7 @@
     <a-upload class="upload" :file-list="fileList" :remove="handleRemove" :before-upload="beforeUpload">
       <a-button><UploadOutlined />选择文件</a-button>
     </a-upload>
-    <a-button :disabled="fileList.length == 0" @click="onRefresh"> 刷新 </a-button>
+    <a-button :disabled="fileList.length == 0" @click="onRefresh">刷新</a-button>
     <a-button type="primary" :disabled="!isR4Upload" :loading="uploading" @click="handleUpload">
       {{ uploading ? '上传中' : '上传' }}
     </a-button>
@@ -145,7 +145,7 @@ export default {
       else notification.error({ message: `${this.lstErrLines.length}条数据存在格式错误` })
       this.pagination.total = this.lstRecords.length
     },
-    onTableChange(pagination, filters, sorter) {
+    onTableChange(pagination, _filters, _sorter) {
       this.pagination = pagination
     },
   },

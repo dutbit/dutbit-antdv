@@ -7,12 +7,23 @@
     <span style="float: right"><a href="#/func/voltime-edit">数据修改</a></span>
   </div>
   <div style="padding: 0 14px 14px">
-    <a-input-search v-model:value="searchText" placeholder="搜索姓名或学号" style="width: 200px" allowClear
-      @search="onSearch" />
+    <a-input-search
+      v-model:value="searchText"
+      placeholder="搜索姓名或学号"
+      style="width: 200px"
+      allowClear
+      @search="onSearch"
+    />
   </div>
-  <a-table size="middle" :columns="columns" :dataSource="lstRecords" :pagination="pagination" :loading="isLoading"
-    row-key="id" @change="onTableChange">
-  </a-table>
+  <a-table
+    size="middle"
+    :columns="columns"
+    :dataSource="lstRecords"
+    :pagination="pagination"
+    :loading="isLoading"
+    row-key="id"
+    @change="onTableChange"
+  ></a-table>
 </template>
 <script>
 import { defineComponent, computed, ref } from 'vue'

@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import { defineComponent, reactive, ref } from 'vue'
+import { defineComponent, reactive } from 'vue'
 import { notification } from 'ant-design-vue'
 import axios from 'axios'
 export default defineComponent({
@@ -103,7 +103,7 @@ export default defineComponent({
     let validateStuId = async (_rule, value) => {
       const reg = /^\d{8,}$/
       // 若使用 RegExp 应注意正则表达字符串的转义问题！
-      if(reg.test(value)) {
+      if (reg.test(value)) {
         return Promise.resolve()
       } else {
         return Promise.reject('请输入正确的学号')
@@ -111,7 +111,7 @@ export default defineComponent({
     }
     let validateTel = async (_rule, value) => {
       const reg = /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/
-      if(reg.test(value)) {
+      if (reg.test(value)) {
         return Promise.resolve()
       } else {
         return Promise.reject('请输入正确的手机号')
@@ -119,7 +119,7 @@ export default defineComponent({
     }
     let validateEmail = async (_rule, value) => {
       const reg = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
-      if(reg.test(value)) {
+      if (reg.test(value)) {
         return Promise.resolve()
       } else {
         return Promise.reject('请输入正确的邮箱')

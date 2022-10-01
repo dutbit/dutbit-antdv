@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import { message, notification } from 'ant-design-vue'
+import { notification } from 'ant-design-vue'
 export default {
   components: {},
   data() {
@@ -52,7 +52,7 @@ export default {
   methods: {
     logout() {
       window.localStorage.removeItem('Authorization')
-      notification.info({message: '提示', description: '已经登出...'})
+      notification.info({ message: '提示', description: '已经登出...' })
       this.$router.replace('/login')
     },
   },
@@ -78,10 +78,10 @@ export default {
           // The request was made and the server responded with a status code
           // that falls out of the range of 2xx
           if (err.response.status == 462) {
-            notification.error({ message: '出错啦！', description: '用户名或密码错误'})
+            notification.error({ message: '出错啦！', description: '用户名或密码错误' })
           }
           if (err.response.status == 463) {
-            notification.error({ message: '出错啦！', description: '登录过期！请重新登录'})
+            notification.error({ message: '出错啦！', description: '登录过期！请重新登录' })
           }
           console.log(`成功请求，但响应状态码为${err.response.status}，响应内容如下`)
           console.log(err.response.data)
@@ -94,7 +94,7 @@ export default {
         }
       }
     )
-    this.$router.beforeEach((to, from) => {
+    this.$router.beforeEach((to, _from) => {
       // console.log(to)
       document.title = to.meta?.pageTitle
       if (to.meta?.isNeedLogin ?? true) {

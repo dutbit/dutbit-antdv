@@ -5,18 +5,17 @@
     <a-col :span="6">
       <a-select v-model:value="selectedTurn" style="width: 100%">
         <a-select-option value="-1">全部</a-select-option>
-        <a-select-option v-for="item in turnData.data" :key="item.id" :value="item.id">{{
-        item.activated
-        ? item.turnName + '(正在进行)'
-        : item.turnName + '(已关闭)'
-        }}</a-select-option>
+        <a-select-option v-for="item in turnData.data" :key="item.id" :value="item.id">
+          {{ item.activated ? item.turnName + '(正在进行)' : item.turnName + '(已关闭)' }}
+        </a-select-option>
       </a-select>
     </a-col>
     <a-col :span="3" style="text-align: right; padding-right: 10px">选择部门</a-col>
     <a-col :span="4">
       <a-select v-model:value="selectedDept" style="width: 100%">
         <a-select-option value="">全部</a-select-option>
-        <a-select-option v-for="item in deptData.data" :key="item.id" :value="item.id">{{ item.deptName }}
+        <a-select-option v-for="item in deptData.data" :key="item.id" :value="item.id">
+          {{ item.deptName }}
         </a-select-option>
       </a-select>
     </a-col>
@@ -40,8 +39,11 @@
     </a-col>
     <a-col>
       <a-tooltip>
-        <template #title>导出<b style="color: red">所选批次</b>的全部报名记录
-          <br />注意：请先选择一个批次后再下载！</template>
+        <template #title>
+          导出<b style="color: red">所选批次</b>的全部报名记录
+          <br />
+          注意：请先选择一个批次后再下载！
+        </template>
         <question-outlined />
       </a-tooltip>
     </a-col>
@@ -61,43 +63,31 @@
       <a-button key="ok" type="primary" @click="infoModalVisible = false">确定</a-button>
     </template>
     <a-descriptions title="报名信息" bordered :column="4">
-      <a-descriptions-item label="姓名" :span="2">{{
-      queryData.data[recordIndex].name
-      }}</a-descriptions-item>
-      <a-descriptions-item label="学号" :span="2">{{
-      queryData.data[recordIndex].stuId
-      }}</a-descriptions-item>
-      <a-descriptions-item label="性别" :span="2">{{
-      queryData.data[recordIndex].sex
-      }}</a-descriptions-item>
-      <a-descriptions-item label="服从调剂" :span="2">{{
-      queryData.data[recordIndex].allowAdjust ? '是' : '否'
-      }}</a-descriptions-item>
-      <a-descriptions-item label="第一志愿" :span="4">{{
-      queryData.data[recordIndex].firstChoice
-      }}</a-descriptions-item>
-      <a-descriptions-item label="第二志愿" :span="4">{{
-      queryData.data[recordIndex].secondChoice
-      }}</a-descriptions-item>
-      <a-descriptions-item label="学院" :span="4">{{
-      queryData.data[recordIndex].faculty
-      }}</a-descriptions-item>
-      <a-descriptions-item label="手机" :span="4">{{
-      queryData.data[recordIndex].tel
-      }}</a-descriptions-item>
-      <a-descriptions-item label="详细信息" :span="4">{{
-      queryData.data[recordIndex].info
-      }}</a-descriptions-item>
+      <a-descriptions-item label="姓名" :span="2">{{ queryData.data[recordIndex].name }}</a-descriptions-item>
+      <a-descriptions-item label="学号" :span="2">{{ queryData.data[recordIndex].stuId }}</a-descriptions-item>
+      <a-descriptions-item label="性别" :span="2">{{ queryData.data[recordIndex].sex }}</a-descriptions-item>
+      <a-descriptions-item label="服从调剂" :span="2">
+        {{ queryData.data[recordIndex].allowAdjust ? '是' : '否' }}
+      </a-descriptions-item>
+      <a-descriptions-item label="第一志愿" :span="4">
+        {{ queryData.data[recordIndex].firstChoice }}
+      </a-descriptions-item>
+      <a-descriptions-item label="第二志愿" :span="4">
+        {{ queryData.data[recordIndex].secondChoice }}
+      </a-descriptions-item>
+      <a-descriptions-item label="学院" :span="4">{{ queryData.data[recordIndex].faculty }}</a-descriptions-item>
+      <a-descriptions-item label="手机" :span="4">{{ queryData.data[recordIndex].tel }}</a-descriptions-item>
+      <a-descriptions-item label="详细信息" :span="4">{{ queryData.data[recordIndex].info }}</a-descriptions-item>
     </a-descriptions>
   </a-modal>
 </template>
-  
+
 <script>
-import { message, notification } from 'ant-design-vue'
+import { notification } from 'ant-design-vue'
 import axios from 'axios'
 import { defineComponent, reactive, ref } from 'vue'
 
-export default {
+export default defineComponent({
   name: 'EnrollQuery',
   setup() {
     let turnData = reactive({ data: [] })
@@ -202,11 +192,7 @@ export default {
           if (deptName) {
             // TODO: 这里代码要重写！！
             queryData.data = enrollData.data.filter((p) => {
-              if (
-                p.firstChoice === deptName ||
-                p.secondChoice === deptName ||
-                p.thridChoice === deptName
-              ) {
+              if (p.firstChoice === deptName || p.secondChoice === deptName || p.thridChoice === deptName) {
                 let keys = Object.keys(p)
                 let str = ''
                 keys.forEach((key) => {
@@ -276,9 +262,9 @@ export default {
       exportData,
     }
   },
-}
+})
 </script>
-  
+
 <style scoped>
 h1 {
   margin-bottom: 20px;
@@ -286,4 +272,3 @@ h1 {
   text-align: center;
 }
 </style>
-  

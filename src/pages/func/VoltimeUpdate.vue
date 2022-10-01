@@ -22,11 +22,9 @@
   <hr />
   <a-space size="small">
     <a-upload class="upload" :file-list="fileList" @remove="handleRemove" :before-upload="beforeUpload" accept=".csv">
-      <a-button>
-        <UploadOutlined />选择文件
-      </a-button>
+      <a-button><UploadOutlined />选择文件</a-button>
     </a-upload>
-    <a-button :disabled="fileList.length == 0" @click="onRefresh"> 刷新 </a-button>
+    <a-button :disabled="fileList.length == 0" @click="onRefresh">刷新</a-button>
     <a-button type="primary" :disabled="!isR4Upload" :loading="uploading" @click="handleUpload">
       {{ uploading ? '上传中' : '上传' }}
     </a-button>
@@ -153,7 +151,7 @@ export default {
           team: splits[7],
           date: splits[8],
           duty_person: splits[9],
-          remark: splits[10]
+          remark: splits[10],
         })
         // lstRecords 的形式可以参考 Apipost
       }
@@ -161,7 +159,7 @@ export default {
       else notification.error({ message: `${this.lstErrLines.length}条数据存在格式错误` })
       this.pagination.total = this.lstRecords.length
     },
-    onTableChange(pagination, filters, sorter) {
+    onTableChange(pagination, _filters, _sorter) {
       this.pagination = pagination
     },
   },
