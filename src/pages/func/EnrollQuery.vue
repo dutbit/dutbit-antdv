@@ -257,7 +257,60 @@ export default {
         message: '提示',
         description: '正在导出...',
       })
-      console.log('开始导出')
+      axios
+        .post('/enroll/getEnrollList', { turnId: parseInt(selectedTurn.value) })
+        .then((response) => {
+          const exportData = response.data.enrollCandidates
+          const fields = {
+            stuId: '学号',
+            name: '姓名',
+            sex: '性别',
+            firstChoice: '第一志愿',
+            secondChoice: '第二志愿',
+            thirdChoice: '第三志愿',
+            allowAdjust: '服从调剂',
+            faculty: '学院',
+            tel: '手机',
+            info: '详细信息'
+          }
+          const head = Object.values(fields).map(item => {
+            return `<td>${item}</td>`
+          }).join('')
+          const body = exportData.map(item => {
+            let res = `<tr style="mso-number-format:'\@';">` // 为了不让表格显示科学计数法
+            for (let key in fields) {
+              if (key == 'allowAdjust') {
+                res += `<td>${item[key] == 1 ? '是': '否'}</td>` 
+                continue
+              }
+              res += `<td>${item[key] != undefined ? item[key] : ''}</td>`
+            }
+            return res + '</tr>'
+          }).join('')
+
+          const worksheet = turnData.data[selectedTurn.value].turnName
+          const uri = 'data:application/vnd.ms-excel;base64,'
+          const template = `<html xmlns:o="urn:schemas-microsoft-com:office:office"
+          xmlns:x="urn:schemas-microsoft-com:office:excel"
+          xmlns="http://www.w3.org/TR/REC-html40">
+          <head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet>
+          <x:Name>${worksheet}</x:Name>
+          <x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet>
+          </x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]-->
+          </head><body><table><tr>${head}</tr>${body}</table></body></html>`
+          let link = document.createElement('a')
+          link.setAttribute('href', uri + window.btoa(unescape(encodeURIComponent(template))))
+          link.setAttribute('download', worksheet + '.xls')
+          link.click()
+          link = null
+          notification.success({
+            message: '提示',
+            description: `已启动下载进程，请查看浏览器下载内容!
+            若提示“文件格式与扩展名不匹配...是否仍要打开？”，请点击“是”`
+          })
+        })
+
+
     }
     return {
       turnData,

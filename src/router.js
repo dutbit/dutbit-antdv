@@ -11,6 +11,7 @@ import DayImageMan from './pages/func/DayImageMan.vue'
 import Enroll from './pages/func/Enroll.vue'
 import EnrollMan from './pages/func/EnrollMan.vue'
 import EnrollQuery from './pages/func/EnrollQuery.vue'
+import EnrollRecovery from './pages/func/EnrollRecovery.vue'
 import Notice from './pages/func/Notice.vue'
 import PointShow from './pages/func/PointShow.vue'
 import PointUpdate from './pages/func/PointUpdate.vue'
@@ -31,6 +32,7 @@ const routes = [
       { path: 'enroll', component: Enroll },
       { path: 'enroll-man', component: EnrollMan },
       { path: 'enroll-query', component: EnrollQuery },
+      { path: 'enroll-recovery', component: EnrollRecovery },
       { path: 'notice', component: Notice },
       { path: 'point-show', component: PointShow },
       { path: 'point-update', component: PointUpdate },

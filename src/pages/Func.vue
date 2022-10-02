@@ -22,10 +22,11 @@
         </a-sub-menu>
         <a-sub-menu key="console">
           <template #title>
-            <span><CodeOutlined /> 控制台 </span>
+            <span><CodeOutlined />控制台 </span>
           </template>
           <a-menu-item key="enroll-query"><router-link to="/func/enroll-query">报名查询</router-link></a-menu-item>
           <a-menu-item key="enroll-man"><router-link to="/func/enroll-man">报名管理</router-link></a-menu-item>
+          <a-menu-item key="enroll-recovery"><router-link to="/func/enroll-recovery">恢复空间</router-link></a-menu-item>
           <a-menu-item key="dayimg-man"><router-link to="/func/dayImage-man">日历图管理</router-link></a-menu-item>
           <a-menu-item-group key="point">
             <template #title>积分查询</template>

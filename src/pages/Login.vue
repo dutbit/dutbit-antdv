@@ -71,6 +71,7 @@ export default {
         if (res.data.success === true) {
           window.localStorage.setItem('Authorization', res.data.token)
           setTimeout(() => {
+            notification.success({message: '提示', description: '登录成功, 正在跳转至功能页...'})
             this.$router.push('/func')
           }, 1000)
         } else notification.error({ message: '错误:', description: res.data.details })
