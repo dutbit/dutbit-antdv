@@ -77,29 +77,25 @@ export default {
         if (err.response) {
           // The request was made and the server responded with a status code
           // that falls out of the range of 2xx
-          if (err.response.status == 462) {
+          // prettier-ignore
+          if (err.response.status === 462) 
             notification.error({ message: '出错啦！', description: '用户名或密码错误' })
-          }
-          if (err.response.status == 463) {
+          if (err.response.status === 463)
             notification.error({ message: '出错啦！', description: '登录过期！请重新登录' })
-          }
           console.log(`成功请求，但响应状态码为${err.response.status}，响应内容如下`)
           console.log(err.response.data)
           // console.log(err.response.headers)
-        } else if (err.request) {
+        } else if (err.request)
           // The request was made but no response was received
           // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
           // http.ClientRequest in node.js
           notification.error({ message: '网络错误: 无响应' })
-        }
       }
     )
     this.$router.beforeEach((to, _from) => {
       // console.log(to)
       document.title = to.meta?.pageTitle
-      if (to.meta?.isNeedLogin ?? true) {
-        if (!window.localStorage.getItem('Authorization')) return '/login'
-      }
+      if (to.meta?.isNeedLogin ?? true) if (!window.localStorage.getItem('Authorization')) return '/login'
     })
   },
 }

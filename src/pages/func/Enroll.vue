@@ -82,11 +82,10 @@
 <script>
 import { defineComponent, reactive } from 'vue'
 import { notification } from 'ant-design-vue'
-import axios from 'axios'
 export default defineComponent({
   components: {},
   setup() {
-    let signupForm = reactive({
+    const signupForm = reactive({
       stuId: '',
       name: '',
       sex: '',
@@ -100,34 +99,25 @@ export default defineComponent({
       details: '',
     })
     // 添加检验规则
-    let validateStuId = async (_rule, value) => {
+    const validateStuId = async (_rule, value) => {
       const reg = /^\d{8,}$/
       // 若使用 RegExp 应注意正则表达字符串的转义问题！
-      if (reg.test(value)) {
-        return Promise.resolve()
-      } else {
-        return Promise.reject('请输入正确的学号')
-      }
+      if (reg.test(value)) return Promise.resolve()
+      else return Promise.reject(new Error('请输入正确的学号'))
     }
-    let validateTel = async (_rule, value) => {
+    const validateTel = async (_rule, value) => {
       const reg = /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/
-      if (reg.test(value)) {
-        return Promise.resolve()
-      } else {
-        return Promise.reject('请输入正确的手机号')
-      }
+      if (reg.test(value)) return Promise.resolve()
+      else return Promise.reject(new Error('请输入正确的手机号'))
     }
-    let validateEmail = async (_rule, value) => {
+    const validateEmail = async (_rule, value) => {
       const reg = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
-      if (reg.test(value)) {
-        return Promise.resolve()
-      } else {
-        return Promise.reject('请输入正确的邮箱')
-      }
+      if (reg.test(value)) return Promise.resolve()
+      else return Promise.reject(new Error('请输入正确的邮箱'))
     }
     // 获取EnrollDepts
     let enrollDepts = reactive([])
-    axios
+    this.$http
       .get('/enroll/')
       .then((response) => {
         enrollDepts = response.data.enrollDepts
@@ -145,7 +135,7 @@ export default defineComponent({
         notification.error({ message: '表单错误', description: '至少选择一个志愿' })
         return
       }
-      let signupFormData = {
+      const signupFormData = {
         stu_id: signupForm.stuId,
         name: signupForm.name,
         sex: signupForm.sex,
@@ -158,12 +148,10 @@ export default defineComponent({
         speciality: signupForm.speciality,
         details: signupForm.details,
       }
-      axios
+      this.$http
         .post('/enroll/', signupFormData)
         .then((response) => {
-          if (response.data.success) {
-            notification.success({ message: '提示', description: '已提交报名表' })
-          }
+          if (response.data.success) notification.success({ message: '提示', description: '已提交报名表' })
         })
         .catch(() => {
           notification.error({ message: '出错啦', description: '无法提交表单，请联系管理员' })

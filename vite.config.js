@@ -14,9 +14,7 @@ export default defineConfig({
       resolvers: [
         AntDesignVueResolver(),
         (name) => {
-          if (name.endsWith('Outlined')) {
-            return { importName: name, path: '@ant-design/icons-vue' }
-          }
+          if (name.endsWith('Outlined')) return { importName: name, path: '@ant-design/icons-vue' }
         },
       ],
     }),

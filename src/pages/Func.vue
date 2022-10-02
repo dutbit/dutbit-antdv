@@ -62,7 +62,7 @@ export default {
   },
   mounted() {
     this.$router.beforeEach((to, _from) => {
-      if (to.path == '/func') {
+      if (to.path === '/func') {
         this.selectedKeys = ['1']
         this.openKeys = ['sub1']
       }

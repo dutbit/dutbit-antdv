@@ -31,7 +31,7 @@ export default {
   mounted() {
     this.$router.push('/my/profile')
     this.$router.beforeEach((to, _from) => {
-      if (to.path == '/my') {
+      if (to.path === '/my') {
         this.selectedKeys = ['info']
         this.openKeys = ['profileSub']
       }

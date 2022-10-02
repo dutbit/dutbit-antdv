@@ -75,13 +75,13 @@ export default {
   computed: {
     // isReadyForUpload
     isR4Upload() {
-      return this.lstRecords.length != 0 && this.lstErrLines.length == 0
+      return this.lstRecords.length !== 0 && this.lstErrLines.length === 0
     },
   },
   methods: {
     handleRemove(file) {
-      let index = this.fileList.indexOf(file)
-      let newFileList = this.fileList.slice()
+      const index = this.fileList.indexOf(file)
+      const newFileList = this.fileList.slice()
       newFileList.splice(index, 1)
       this.fileList = newFileList
     },
@@ -112,13 +112,13 @@ export default {
         return
       }
       reader.onload = () => {
-        if (reader.result.indexOf('�') != -1 || reader.result.indexOf('?') != -1) {
-          if (this.encoding == '') {
+        if (reader.result.indexOf('�') !== -1 || reader.result.indexOf('?') !== -1)
+          if (this.encoding === '') {
             notification.warning({ message: '编码不是UTF-8，尝试GBK' })
             this.encoding = 'GBK'
             reader.readAsText(file, 'GBK')
           } else notification.error({ message: '编码不是UTF-8或GBK' })
-        } else this.csv2array(reader.result)
+        else this.csv2array(reader.result)
       }
       reader.onerror = () => {
         notification.error({ message: '浏览器FileReader错误', description: `${reader.error}\n请尝试更换浏览器` })
@@ -133,13 +133,13 @@ export default {
       for (let iLine = 1; iLine < lines.length; iLine++) {
         if (!lines[iLine]) continue
         const splits = lines[iLine].replace(/\s*/g, '').split(',')
-        let lstErrItems = []
+        const lstErrItems = []
         if (!/^\d+$/.test(splits[3])) lstErrItems.push('学号')
         if (!/^(\d{1,3}|\d{1,3}\.\d+)$/.test(splits[4])) lstErrItems.push('时长')
         if (!/^\d{4}\/\d{1,2}\/\d{1,2}$/.test(splits[8])) lstErrItems.push('时间')
-        if (splits.length != 11 || lstErrItems.length) {
+        if (splits.length !== 11 || lstErrItems.length)
           this.lstErrLines.push({ msg: `行${iLine}格式错误：${lstErrItems.join('，')}`, desc: splits.join('，') })
-        }
+
         this.lstRecords.push({
           name: splits[0],
           sex: splits[1],

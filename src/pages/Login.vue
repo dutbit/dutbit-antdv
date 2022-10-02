@@ -59,7 +59,7 @@ export default {
   computed: {},
   methods: {
     onLogin() {
-      let payload = Object.assign({}, this.form)
+      const payload = Object.assign({}, this.form)
       console.log(payload)
       if (!this.validateEmail(payload.email)) {
         notification.error({ message: '错误:', description: '邮箱格式不正确' })
@@ -78,7 +78,7 @@ export default {
     },
     onReg() {
       // console.log(values, this.form)
-      let payload = Object.assign({}, this.formReg)
+      const payload = Object.assign({}, this.formReg)
       if (!this.validateEmail(payload.email)) {
         notification.error({ message: '错误:', description: '邮箱格式不正确' })
         return
@@ -94,8 +94,8 @@ export default {
       })
     },
     validateEmail(email) {
-      let reg = /^\w+(?:\.\w+)*@\w+(?:\.\w+)+$/
-      //if(reg.test(email)){return true}else{return false}
+      const reg = /^\w+(?:\.\w+)*@\w+(?:\.\w+)+$/
+      // if(reg.test(email)){return true}else{return false}
       return reg.test(email)
     },
   },

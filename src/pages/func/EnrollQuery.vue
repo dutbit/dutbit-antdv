@@ -84,165 +84,88 @@
 
 <script>
 import { notification } from 'ant-design-vue'
-import axios from 'axios'
 import { defineComponent, reactive, ref } from 'vue'
 
 export default defineComponent({
   name: 'EnrollQuery',
   setup() {
-    let turnData = reactive({ data: [] })
+    const turnData = reactive({ data: [] })
     // data里是对象数组 [{...}, {...}], 每个对象包括 id, turnName, activated
-    let deptData = reactive({ data: [] })
+    const deptData = reactive({ data: [] })
     // data里是对象数组 [{...}, {...}], 每个对象包括 id, deptName
-    let queryData = reactive({ data: [] })
+    const queryData = reactive({ data: [] })
     // 查询结果 queryData
-    let enrollData = reactive({ data: [] })
+    const enrollData = reactive({ data: [] })
     // 原始数据 enrollData
-    let filterData = reactive({ data: [] })
+    const filterData = reactive({ data: [] })
     // 在queryData的基础上，进行筛选
-    let selectedDept = ref('')
-    let selectedTurn = ref('-1')
-    let infoModalVisible = ref(false)
-    let recordIndex = ref(0)
-    let filterText = ref('')
+    const selectedDept = ref('')
+    const selectedTurn = ref('-1')
+    const infoModalVisible = ref(false)
+    const recordIndex = ref(0)
+    const filterText = ref('')
 
     const columns = [
-      {
-        title: '学号',
-        dataIndex: 'stuId',
-        key: 'stuId',
-        fixed: 'left',
-        width: 120,
-      },
-      {
-        title: '姓名',
-        dataIndex: 'name',
-        key: 'name',
-        fixed: 'left',
-        width: 100,
-      },
+      { title: '学号', dataIndex: 'stuId', key: 'stuId', fixed: 'left', width: 120 },
+      { title: '姓名', dataIndex: 'name', key: 'name', fixed: 'left', width: 100 },
       { title: '性别', dataIndex: 'sex', key: 'sex', width: 60 },
-      {
-        title: '第一志愿',
-        dataIndex: 'firstChoice',
-        key: 'firstChoice',
-        width: 150,
-      },
-      {
-        title: '第二志愿',
-        dataIndex: 'secondChoice',
-        key: 'secondChoice',
-        width: 150,
-      },
-      {
-        title: '服从调剂',
-        dataIndex: 'allowAdjust',
-        key: 'allowAdjust',
-        width: 100,
-      },
+      { title: '第一志愿', dataIndex: 'firstChoice', key: 'firstChoice', width: 150 },
+      { title: '第二志愿', dataIndex: 'secondChoice', key: 'secondChoice', width: 150 },
+      { title: '服从调剂', dataIndex: 'allowAdjust', key: 'allowAdjust', width: 100 },
       { title: '学院', dataIndex: 'faculty', key: 'faculty', width: 150 },
       { title: '手机', dataIndex: 'tel', key: 'tel', width: 120 },
-      {
-        title: '详细信息',
-        dataIndex: 'info',
-        key: 'info',
-        width: 200,
-      },
+      { title: '详细信息', dataIndex: 'info', key: 'info', width: 200 },
       { title: '操作', key: 'operation', fixed: 'right', width: 120 },
     ]
 
     // 请求 deptList 与 turnList
-    axios
+    this.$http
       .get('/enroll/getDepts')
-      .then((response) => {
-        deptData.data = response.data.depts
+      .then((res) => {
+        deptData.data = res.data.depts
       })
       .catch(() => {
-        notification.error({
-          message: '出错啦',
-          description: '无法获取部门列表，请联系管理员',
-        })
+        notification.error({ message: '出错啦', description: '无法获取部门列表，请联系管理员' })
       })
-    axios
+    this.$http
       .get('/enroll/getTurns')
-      .then((response) => {
-        turnData.data = response.data.turns
+      .then((res) => {
+        turnData.data = res.data.turns
       })
       .catch(() => {
-        notification.error({
-          message: '出错啦',
-          description: '无法获取报名轮次，请联系管理员',
-        })
+        notification.error({ message: '出错啦', description: '无法获取报名轮次，请联系管理员' })
       })
 
-    let queryEnroll = () => {
+    const queryEnroll = () => {
       // 注意, selectedTurn已经在Flask中封装好, 如果为-1, 则返回所有批次,
       // 即selectedTurn将有后端进行校验, 因此只需关注 selectedTurn
-      axios
+      this.$http
         .post('/enroll/getEnrollList', { turnId: parseInt(selectedTurn.value) })
-        .then((response) => {
-          enrollData.data = response.data.enrollCandidates
-          let deptName = ''
-          deptData.data.forEach((p) => {
-            if (p.id === selectedDept.value) {
-              deptName = p.deptName
-            }
-          })
+        .then((res) => {
+          enrollData.data = res.data.enrollCandidates
+          const deptName = deptData.data.find((p) => p.id === selectedDept.value).deptName
           console.log('deptName', deptName)
-          if (deptName) {
-            // TODO: 这里代码要重写！！
-            queryData.data = enrollData.data.filter((p) => {
-              if (p.firstChoice === deptName || p.secondChoice === deptName || p.thridChoice === deptName) {
-                let keys = Object.keys(p)
-                let str = ''
-                keys.forEach((key) => {
-                  str = str + '' + p[key]
-                })
-                if (str.indexOf(filterText.value) > -1) {
-                  return p
-                }
-              }
-            })
-          } else {
-            queryData.data = enrollData.data.filter((p) => {
-              let keys = Object.keys(p)
-              let str = ''
-              keys.forEach((key) => {
-                str = str + '' + p[key]
-              })
-              if (str.indexOf(filterText.value) > -1) {
-                return p
-              }
-            })
-          }
+          queryData.data = enrollData.data.filter((p) => {
+            const test = deptName ? [p.firstChoice, p.secondChoice, p.thridChoice].includes(deptName) : true
+            return Object.values(p).includes(filterText.value) && test
+          })
         })
         .catch(() => {
-          notification.error({
-            message: '出错啦',
-            description: '无法获取报名数据，请联系管理员',
-          })
+          notification.error({ message: '出错啦', description: '无法获取报名数据，请联系管理员' })
         })
     }
-    let handleInfo = (id) => {
+    const handleInfo = (id) => {
       queryData.data.forEach((p, index) => {
-        if (p.id === id) {
-          recordIndex.value = index
-        }
+        if (p.id === id) recordIndex.value = index
       })
       infoModalVisible.value = !infoModalVisible.value
     }
-    let exportData = () => {
-      if (selectedTurn.value == '-1') {
-        notification.info({
-          message: '提示',
-          description: '请先选择一个批次！',
-        })
+    const exportData = () => {
+      if (selectedTurn.value === '-1') {
+        notification.info({ message: '提示', description: '请先选择一个批次！' })
         return
       }
-      notification.info({
-        message: '提示',
-        description: '正在导出...',
-      })
+      notification.info({ message: '提示', description: '正在导出...' })
       console.log('开始导出')
     }
     return {
