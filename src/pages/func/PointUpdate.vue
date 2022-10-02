@@ -22,7 +22,7 @@
     <a-upload class="upload" :file-list="fileList" :remove="handleRemove" :before-upload="beforeUpload">
       <a-button><UploadOutlined />选择文件</a-button>
     </a-upload>
-    <a-button :disabled="fileList.length == 0" @click="onRefresh"> 刷新 </a-button>
+    <a-button :disabled="fileList.length == 0" @click="onRefresh">刷新</a-button>
     <a-button type="primary" :disabled="!isR4Upload" :loading="uploading" @click="handleUpload">
       {{ uploading ? '上传中' : '上传' }}
     </a-button>
@@ -72,13 +72,13 @@ export default {
   computed: {
     // isReadyForUpload
     isR4Upload() {
-      return this.lstRecords.length != 0 && this.lstErrLines.length == 0
+      return this.lstRecords.length !== 0 && this.lstErrLines.length === 0
     },
   },
   methods: {
     handleRemove(file) {
-      let index = this.fileList.indexOf(file)
-      let newFileList = this.fileList.slice()
+      const index = this.fileList.indexOf(file)
+      const newFileList = this.fileList.slice()
       newFileList.splice(index, 1)
       this.fileList = newFileList
     },
@@ -109,13 +109,13 @@ export default {
         return
       }
       reader.onload = () => {
-        if (reader.result.indexOf('�') != -1 || reader.result.indexOf('?') != -1) {
-          if (this.encoding == '') {
+        if (reader.result.indexOf('�') !== -1 || reader.result.indexOf('?') !== -1)
+          if (this.encoding === '') {
             notification.warning({ message: '编码不是UTF-8，尝试GBK' })
             this.encoding = 'GBK'
             reader.readAsText(file, 'GBK')
           } else notification.error({ message: '编码不是UTF-8或GBK' })
-        } else this.csv2array(reader.result)
+        else this.csv2array(reader.result)
       }
       reader.onerror = () => {
         notification.error({ message: '浏览器FileReader错误', description: reader.error })
@@ -128,14 +128,14 @@ export default {
       for (let iLine = 1; iLine < lines.length; iLine++) {
         if (!lines[iLine]) continue
         const splits = lines[iLine].replace(/\s*/g, '').split(',')
-        let lstErrItems = []
+        const lstErrItems = []
         if (!/^\d+$/.test(splits[1])) lstErrItems.push('学号')
         if (!/^\d+$/.test(splits[2])) lstErrItems.push('积分')
-        if (splits.length != 4 || lstErrItems.length)
+        if (splits.length !== 4 || lstErrItems.length)
           this.lstErrLines.push({ msg: `行${iLine}格式错误：${lstErrItems.join('，')}`, desc: splits.join('，') })
         if (splits[3])
           this.lstRecords.push({
-            iLine: iLine,
+            iLine,
             name: splits[0],
             stu_id: parseInt(splits[1]),
             points: parseInt(splits[2]),
@@ -145,7 +145,7 @@ export default {
       else notification.error({ message: `${this.lstErrLines.length}条数据存在格式错误` })
       this.pagination.total = this.lstRecords.length
     },
-    onTableChange(pagination, filters, sorter) {
+    onTableChange(pagination, _filters, _sorter) {
       this.pagination = pagination
     },
   },

@@ -1,3 +1,5 @@
+import { fileURLToPath, URL } from 'node:url'
+
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import Components from 'unplugin-vue-components/vite'
@@ -12,11 +14,10 @@ export default defineConfig({
       resolvers: [
         AntDesignVueResolver(),
         (name) => {
-          if (name.endsWith('Outlined')) {
-            return { importName: name, path: '@ant-design/icons-vue' }
-          }
+          if (name.endsWith('Outlined')) return { importName: name, path: '@ant-design/icons-vue' }
         },
       ],
     }),
   ],
+  resolve: { alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) } },
 })

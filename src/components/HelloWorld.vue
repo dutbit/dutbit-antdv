@@ -18,7 +18,7 @@
 export default {
   components: {},
   props: {},
-  setup(props, { attrs, slots, emit, expose }) {
+  setup(_props, { _attrs, _slots, _emit, _expose }) {
     return {}
   },
   data() {
@@ -34,5 +34,4 @@ export default {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

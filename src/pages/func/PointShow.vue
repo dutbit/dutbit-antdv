@@ -20,18 +20,16 @@
     :loading="isLoading"
     row-key="id"
     @change="onTableChange"
-  >
-  </a-table>
+  ></a-table>
 </template>
 <script>
 import { defineComponent, computed, ref } from 'vue'
 import { usePagination } from 'vue-request'
-import axios from 'axios'
 
 export default defineComponent({
   setup() {
     const searchText = ref('')
-    const funService = (params) => axios.get('/point-man/get-records', { params })
+    const funService = (params) => this.$http.get('/point-man/get-records', { params })
     const {
       data: dataAxios,
       loading: isLoading,

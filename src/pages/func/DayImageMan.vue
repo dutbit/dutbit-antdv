@@ -86,7 +86,7 @@ export default {
   inject: ['axiosBaseURL'],
   methods: {
     whichBtnType(nameDir) {
-      return nameDir == this.nameDir ? 'primary' : 'text'
+      return nameDir === this.nameDir ? 'primary' : 'text'
     },
     getCata(isGetCont) {
       this.$http.get('/day-image/cata').then((res) => {
@@ -139,7 +139,7 @@ export default {
     delDir(nameDir) {
       this.$http.get(`/day-image/del-dir/${nameDir}`).then(() => {
         notification.success({ message: '已删除文件夹' })
-        this.getCata(nameDir == this.nameDir)
+        this.getCata(nameDir === this.nameDir)
       })
     },
   },

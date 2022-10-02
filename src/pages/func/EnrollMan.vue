@@ -7,16 +7,25 @@
         <a-divider type="vertical" />
         <a @click="editCurrentDept(record.id)">编辑</a>
         <a-divider type="vertical" />
-        <a-popconfirm title="你确定要删除该部门吗？" ok-text="是" cancel-text="否" @confirm="deleteCurrentDept(record.id)">
+        <a-popconfirm
+          title="你确定要删除该部门吗？"
+          ok-text="是"
+          cancel-text="否"
+          @confirm="deleteCurrentDept(record.id)"
+        >
           <a-tooltip placement="bottom">
-            <template #title>注意！出于安全考虑，该部门<b style="color: red">不会被彻底删除</b>， 而是会被打上deleted标签，可以在恢复列表中找到该记录</template>
+            <template #title>
+              注意！出于安全考虑，该部门<b style="color: red">不会被彻底删除</b>
+              ， 而是会被打上deleted标签，可以在恢复列表中找到该记录
+            </template>
             <a href="#">删除</a>
           </a-tooltip>
         </a-popconfirm>
       </template>
     </template>
     <a-modal :visible="editDeptVisible" title="部门名称">
-      <span>请输入新的部门名称:</span> <br />
+      <span>请输入新的部门名称:</span>
+      <br />
       <a-input v-model:value="newDeptName" show-count :maxlength="10"></a-input>
       <template #footer>
         <a-button @click="handleEditCurrentDept">确定</a-button>
@@ -38,32 +47,60 @@
         <a-divider type="vertical" />
         <a @click="closeCurrentTurn(record.id)">关闭</a>
         <a-divider type="vertical" />
-        <a-popconfirm title="你确定要删除该批次吗？" ok-text="是" cancel-text="否" @confirm="deleteCurrentTurn(record.id)">
+        <a-popconfirm
+          title="你确定要删除该批次吗？"
+          ok-text="是"
+          cancel-text="否"
+          @confirm="deleteCurrentTurn(record.id)"
+        >
           <a-tooltip placement="bottom">
-            <template #title>注意！出于安全考虑，该批次<b style="color: red">不会被彻底删除</b>， 而是会被打上deleted标签，可以在恢复列表中找到该记录</template>
+            <template #title>
+              注意！出于安全考虑，该批次<b style="color: red">不会被彻底删除</b>
+              ， 而是会被打上deleted标签，可以在恢复列表中找到该记录
+            </template>
             <a href="#">删除</a>
           </a-tooltip>
         </a-popconfirm>
       </template>
     </template>
   </a-table>
-  <a-modal :visible="editTurnVisible" title="批次名称" @ok="handleEditCurrentTurn" @cancel="editTurnVisible = false"
-    :destroyOnClose="true">
+  <a-modal
+    :visible="editTurnVisible"
+    title="批次名称"
+    @ok="handleEditCurrentTurn"
+    @cancel="editTurnVisible = false"
+    :destroyOnClose="true"
+  >
     <span>请输入新的批次名称:</span>
     <a-input v-model:value="newTurnName" show-count :maxlength="20"></a-input>
   </a-modal>
-  <a-modal :visible="createTurnVisible" title="批次名称" @ok="handleCreateNewTurn" @cancel="createTurnVisible = false"
-    :destroyOnClose="true">
+  <a-modal
+    :visible="createTurnVisible"
+    title="批次名称"
+    @ok="handleCreateNewTurn"
+    @cancel="createTurnVisible = false"
+    :destroyOnClose="true"
+  >
     <span>请输入新的批次名称:</span>
     <a-input v-model:value="newTurnName" show-count :maxlength="20"></a-input>
   </a-modal>
-  <a-modal :visible="editDeptVisible" title="部门名称" @ok="handleEditCurrentDept" @cancel="editDeptVisible = false"
-    :destroyOnClose="true">
+  <a-modal
+    :visible="editDeptVisible"
+    title="部门名称"
+    @ok="handleEditCurrentDept"
+    @cancel="editDeptVisible = false"
+    :destroyOnClose="true"
+  >
     <span>请输入新的部门名称:</span>
     <a-input v-model:value="newDeptName" show-count :maxlength="10"></a-input>
   </a-modal>
-  <a-modal :visible="createDeptVisible" title="部门名称" @ok="handleCreateNewDept" @cancel="createDeptVisible = false"
-    :destroyOnClose="true">
+  <a-modal
+    :visible="createDeptVisible"
+    title="部门名称"
+    @ok="handleCreateNewDept"
+    @cancel="createDeptVisible = false"
+    :destroyOnClose="true"
+  >
     <span>请输入新的部门名称:</span>
     <a-input v-model:value="newDeptName" show-count :maxlength="10"></a-input>
   </a-modal>
@@ -71,56 +108,39 @@
 
 <script>
 import { reactive, ref } from 'vue'
-import axios from 'axios'
 import { notification } from 'ant-design-vue'
 export default {
   name: 'EnrollMan',
   setup() {
     const throwRequestError = () => {
-      notification.error({
-        message: '出错啦',
-        description: '无法发送请求，请联系管理员',
-      })
+      notification.error({ message: '出错啦', description: '无法发送请求，请联系管理员' })
     }
 
     // 部门管理部分
     const deptColumns = [
-      {
-        title: '部门名称',
-        dataIndex: 'deptName',
-        key: 'deptName',
-      },
-      {
-        title: '操作',
-        key: 'operation',
-        fixed: 'right',
-      },
+      { title: '部门名称', dataIndex: 'deptName', key: 'deptName' },
+      { title: '操作', key: 'operation', fixed: 'right' },
     ]
-    let deptData = reactive({ data: [] })
-    let editDeptVisible = ref(false)
-    let createDeptVisible = ref(false)
-    let newDeptName = ref('')
+    const deptData = reactive({ data: [] })
+    const editDeptVisible = ref(false)
+    const createDeptVisible = ref(false)
+    const newDeptName = ref('')
     let currentDeptId = -1
 
     const getDeptData = () => {
-      axios
+      this.$http
         .get('/enroll/getDepts')
         .then((response) => {
           deptData.data = response.data.depts
         })
         .catch(() => {
-          notification.error({
-            message: '出错啦',
-            description: '无法获取部门列表，请联系管理员',
-          })
+          notification.error({ message: '出错啦', description: '无法获取部门列表，请联系管理员' })
         })
     }
     const getDeptById = (id) => {
       let dept = null
       deptData.data.forEach((p) => {
-        if (p.id == id) {
-          dept = p
-        }
+        if (p.id === id) dept = p
       })
       return dept
     }
@@ -131,20 +151,13 @@ export default {
     }
     const handleCreateNewDept = () => {
       const dept = { deptName: newDeptName.value }
-      axios
+      this.$http
         .post('/enroll/createDept', { dept })
         .then((response) => {
-          if (response.data.success) {
-            notification.success({
-              message: '提示',
-              description: `已成功添加部门(${dept.deptName})`,
-            })
-          } else {
-            notification.error({
-              message: '出错啦',
-              description: '添加部门失败，请联系管理员',
-            })
-          }
+          if (response.data.success)
+            notification.success({ message: '提示', description: `已成功添加部门(${dept.deptName})` })
+          else notification.error({ message: '出错啦', description: '添加部门失败，请联系管理员' })
+
           getDeptData()
         })
         .catch(() => {
@@ -159,20 +172,13 @@ export default {
     const handleEditCurrentDept = () => {
       const dept = getDeptById(currentDeptId)
       dept.deptName = newDeptName.value
-      axios
+      this.$http
         .post('/enroll/setDept', { dept })
         .then((response) => {
-          if (response.data.success) {
-            notification.success({
-              message: '提示',
-              description: `已将部门名称变更为(${dept.deptName})!`,
-            })
-          } else {
-            notification.error({
-              message: '出错啦',
-              description: '变更失败，请联系管理员',
-            })
-          }
+          if (response.data.success)
+            notification.success({ message: '提示', description: `已将部门名称变更为(${dept.deptName})!` })
+          else notification.error({ message: '出错啦', description: '变更失败，请联系管理员' })
+
           getDeptData()
         })
         .catch(() => {
@@ -182,20 +188,13 @@ export default {
     }
     const deleteCurrentDept = (id) => {
       const dept = getDeptById(id)
-      axios
+      this.$http
         .post('/enroll/deleteDept', { dept })
         .then((response) => {
-          if (response.data.success) {
-            notification.success({
-              message: '提示',
-              description: `部门(${dept.deptName})已删除！若恢复请前往恢复空间`,
-            })
-          } else {
-            notification.error({
-              message: '出错啦',
-              description: '删除失败，请联系管理员',
-            })
-          }
+          if (response.data.success)
+            notification.success({ message: '提示', description: `部门(${dept.deptName})已删除！若恢复请前往恢复空间` })
+          else notification.error({ message: '出错啦', description: '删除失败，请联系管理员' })
+
           getDeptData()
         })
         .catch(() => {
@@ -205,48 +204,31 @@ export default {
 
     // 批次管理部分
     const turnColumns = [
-      {
-        title: '批次名称',
-        dataIndex: 'turnName',
-        key: 'turnName',
-      },
-      {
-        title: '批次状态',
-        dataIndex: 'activated',
-        key: 'activated',
-      },
-      {
-        title: '操作',
-        key: 'operation',
-        fixed: 'right',
-      },
+      { title: '批次名称', dataIndex: 'turnName', key: 'turnName' },
+      { title: '批次状态', dataIndex: 'activated', key: 'activated' },
+      { title: '操作', key: 'operation', fixed: 'right' },
     ]
-    let turnData = reactive({ data: [] })
-    let editTurnVisible = ref(false)
-    let createTurnVisible = ref(false)
-    let newTurnName = ref('')
+    const turnData = reactive({ data: [] })
+    const editTurnVisible = ref(false)
+    const createTurnVisible = ref(false)
+    const newTurnName = ref('')
     let currentTurnId = -1
 
     const getTurnData = () => {
-      axios
+      this.$http
         .get('/enroll/getTurns')
         .then((response) => {
           turnData.data = response.data.turns
           console.log(response)
         })
         .catch(() => {
-          notification.error({
-            message: '出错啦',
-            description: '无法获取报名轮次，请联系管理员',
-          })
+          notification.error({ message: '出错啦', description: '无法获取报名轮次，请联系管理员' })
         })
     }
     const getTurnById = (id) => {
       let turn = null
       turnData.data.forEach((p) => {
-        if (p.id == id) {
-          turn = p
-        }
+        if (p.id === id) turn = p
       })
       return turn
     }
@@ -257,20 +239,13 @@ export default {
     }
     const handleCreateNewTurn = () => {
       const turn = { turnName: newTurnName.value }
-      axios
+      this.$http
         .post('/enroll/createTurn', { turn })
         .then((response) => {
-          if (response.data.success) {
-            notification.success({
-              message: '提示',
-              description: `已成功添加新批次(${turn.turnName})`,
-            })
-          } else {
-            notification.error({
-              message: '出错啦',
-              description: '添加新批次失败，请联系管理员',
-            })
-          }
+          if (response.data.success)
+            notification.success({ message: '提示', description: `已成功添加新批次(${turn.turnName})` })
+          else notification.error({ message: '出错啦', description: '添加新批次失败，请联系管理员' })
+
           getTurnData()
         })
         .catch(() => {
@@ -285,20 +260,13 @@ export default {
     const handleEditCurrentTurn = () => {
       const turn = getTurnById(currentTurnId)
       turn.turnName = newTurnName.value
-      axios
+      this.$http
         .post('/enroll/setTurn', { turn })
         .then((response) => {
-          if (response.data.success) {
-            notification.success({
-              message: '提示',
-              description: `已将批次名称变更为(${turn.turnName})!`,
-            })
-          } else {
-            notification.error({
-              message: '出错啦',
-              description: '变更失败，请联系管理员',
-            })
-          }
+          if (response.data.success)
+            notification.success({ message: '提示', description: `已将批次名称变更为(${turn.turnName})!` })
+          else notification.error({ message: '出错啦', description: '变更失败，请联系管理员' })
+
           getTurnData()
         })
         .catch(() => {
@@ -310,37 +278,24 @@ export default {
       const turn = getTurnById(id)
       // 前端对批次进行校验，确保只有一个批次处于开启状态
       for (let i = 0; i < turnData.data.length; i++) {
-        let p = turnData.data[i]
-        if (p.activated && p.id != turn.id) {
-          notification.info({
-            message: '提示',
-            description: `请先关闭批次(${p.turnName})，再开启新报名批次！`,
-          })
+        const p = turnData.data[i]
+        if (p.activated && p.id !== turn.id) {
+          notification.info({ message: '提示', description: `请先关闭批次(${p.turnName})，再开启新报名批次！` })
           return
         }
       }
       if (turn.activated) {
-        notification.info({
-          message: '提示',
-          description: `批次(${turn.turnName})已处于开放状态`,
-        })
+        notification.info({ message: '提示', description: `批次(${turn.turnName})已处于开放状态` })
         return
       }
       turn.activated = 1
-      axios
+      this.$http
         .post('/enroll/setTurn', { turn })
         .then((response) => {
-          if (response.data.success) {
-            notification.success({
-              message: '提示',
-              description: `批次(${turn.turnName})已开放！`,
-            })
-          } else {
-            notification.error({
-              message: '出错啦',
-              description: '变更失败，请联系管理员',
-            })
-          }
+          if (response.data.success)
+            notification.success({ message: '提示', description: `批次(${turn.turnName})已开放！` })
+          else notification.error({ message: '出错啦', description: '变更失败，请联系管理员' })
+
           getTurnData()
         })
         .catch(() => {
@@ -350,27 +305,17 @@ export default {
     const closeCurrentTurn = (id) => {
       const turn = getTurnById(id)
       if (!turn.activated) {
-        notification.info({
-          message: '提示',
-          description: `批次(${turn.turnName})已处于关闭状态`,
-        })
+        notification.info({ message: '提示', description: `批次(${turn.turnName})已处于关闭状态` })
         return
       }
       turn.activated = 0
-      axios
+      this.$http
         .post('/enroll/setTurn', { turn })
         .then((response) => {
-          if (response.data.success) {
-            notification.success({
-              message: '提示',
-              description: `批次(${turn.turnName})已关闭！`,
-            })
-          } else {
-            notification.error({
-              message: '出错啦',
-              description: '变更失败，请联系管理员',
-            })
-          }
+          if (response.data.success)
+            notification.success({ message: '提示', description: `批次(${turn.turnName})已关闭！` })
+          else notification.error({ message: '出错啦', description: '变更失败，请联系管理员' })
+
           getTurnData()
         })
         .catch(() => {
@@ -379,20 +324,13 @@ export default {
     }
     const deleteCurrentTurn = (id) => {
       const turn = getTurnById(id)
-      axios
+      this.$http
         .post('/enroll/deleteTurn', { turn })
         .then((response) => {
-          if (response.data.success) {
-            notification.success({
-              message: '提示',
-              description: `批次(${turn.turnName})已删除！若恢复请前往恢复空间`,
-            })
-          } else {
-            notification.error({
-              message: '出错啦',
-              description: '删除失败，请联系管理员',
-            })
-          }
+          if (response.data.success)
+            notification.success({ message: '提示', description: `批次(${turn.turnName})已删除！若恢复请前往恢复空间` })
+          else notification.error({ message: '出错啦', description: '删除失败，请联系管理员' })
+
           getTurnData()
         })
         .catch(() => {

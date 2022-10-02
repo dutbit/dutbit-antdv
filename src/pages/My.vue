@@ -1,5 +1,5 @@
 <template>
-   <a-layout style="margin: 24px 24px 0; background: #fff; box-shadow: 2px 2px 8px 2px #ccc">
+  <a-layout style="margin: 24px 24px 0; background: #fff; box-shadow: 2px 2px 8px 2px #ccc">
     <a-layout-sider width="150" style="background: #fff">
       <a-menu mode="inline" style="height: 100%" v-model:openKeys="openKeys" v-model:selectedKeys="selectedKeys">
         <a-sub-menu key="profileSub">
@@ -30,8 +30,8 @@ export default {
   methods: {},
   mounted() {
     this.$router.push('/my/profile')
-    this.$router.beforeEach((to, from) => {
-      if (to.path == '/my') {
+    this.$router.beforeEach((to, _from) => {
+      if (to.path === '/my') {
         this.selectedKeys = ['info']
         this.openKeys = ['profileSub']
       }

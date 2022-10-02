@@ -4,7 +4,7 @@ import Home from './pages/Home.vue'
 import Func from './pages/Func.vue'
 import Message from './pages/Message.vue'
 import My from './pages/My.vue'
-import Profile from  './pages/my/Profile.vue'
+import Profile from './pages/my/Profile.vue'
 import About from './pages/About.vue'
 import Login from './pages/Login.vue'
 import DayImageMan from './pages/func/DayImageMan.vue'
@@ -42,13 +42,7 @@ const routes = [
     ],
   },
   { path: '/message', component: Message, meta: { pageTitle: '消息' } },
-  { path: '/my', 
-    component: My, 
-    meta: { pageTitle: '我的' },
-    children: [
-      { path: 'profile', component: Profile}
-    ]
-  },
+  { path: '/my', component: My, meta: { pageTitle: '我的' }, children: [{ path: 'profile', component: Profile }] },
   { path: '/about', component: About, meta: { pageTitle: '关于' } },
   {
     path: '/login',

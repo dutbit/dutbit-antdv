@@ -50,8 +50,8 @@ export default {
     return {}
   },
   mounted() {
-    this.$router.beforeEach((to, from) => {
-      if (to.path == '/func') {
+    this.$router.beforeEach((to, _from) => {
+      if (to.path === '/func') {
         this.selectedKeys = ['1']
         this.openKeys = ['sub1']
       }
@@ -60,5 +60,4 @@ export default {
 }
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
