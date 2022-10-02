@@ -117,7 +117,7 @@ export default defineComponent({
     }
     // 获取EnrollDepts
     let enrollDepts = reactive([])
-    this.$http
+    axios
       .get('/enroll/')
       .then((response) => {
         enrollDepts = response.data.enrollDepts
@@ -148,7 +148,7 @@ export default defineComponent({
         speciality: signupForm.speciality,
         details: signupForm.details,
       }
-      this.$http
+      axios
         .post('/enroll/', signupFormData)
         .then((response) => {
           if (response.data.success) notification.success({ message: '提示', description: '已提交报名表' })

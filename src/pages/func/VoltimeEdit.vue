@@ -28,11 +28,12 @@
 <script>
 import { defineComponent, computed, ref } from 'vue'
 import { usePagination } from 'vue-request'
+import axios from 'axios'
 
 export default defineComponent({
   setup() {
     const searchText = ref('')
-    const funService = (params) => this.$http.post('/voltime-man/', { ...params })
+    const funService = (params) => axios.post('/voltime-man/', { ...params })
     const {
       data: dataAxios,
       loading: isLoading,

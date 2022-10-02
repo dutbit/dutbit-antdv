@@ -75,6 +75,9 @@
       <a-descriptions-item label="第二志愿" :span="4">
         {{ queryData.data[recordIndex].secondChoice }}
       </a-descriptions-item>
+      <a-descriptions-item label="第三志愿" :span="4">
+        {{ queryData.data[recordIndex].thirdChoice }}
+      </a-descriptions-item>
       <a-descriptions-item label="学院" :span="4">{{ queryData.data[recordIndex].faculty }}</a-descriptions-item>
       <a-descriptions-item label="手机" :span="4">{{ queryData.data[recordIndex].tel }}</a-descriptions-item>
       <a-descriptions-item label="详细信息" :span="4">{{ queryData.data[recordIndex].info }}</a-descriptions-item>
@@ -84,6 +87,7 @@
 
 <script>
 import { notification } from 'ant-design-vue'
+import axios from 'axios'
 import { defineComponent, reactive, ref } from 'vue'
 
 export default defineComponent({
@@ -111,6 +115,7 @@ export default defineComponent({
       { title: '性别', dataIndex: 'sex', key: 'sex', width: 60 },
       { title: '第一志愿', dataIndex: 'firstChoice', key: 'firstChoice', width: 150 },
       { title: '第二志愿', dataIndex: 'secondChoice', key: 'secondChoice', width: 150 },
+      { title: '第三志愿', dataIndex: 'thirdChoice', key: 'thirdChoice', width: 150 },
       { title: '服从调剂', dataIndex: 'allowAdjust', key: 'allowAdjust', width: 100 },
       { title: '学院', dataIndex: 'faculty', key: 'faculty', width: 150 },
       { title: '手机', dataIndex: 'tel', key: 'tel', width: 120 },
@@ -119,7 +124,7 @@ export default defineComponent({
     ]
 
     // 请求 deptList 与 turnList
-    this.$http
+    axios
       .get('/enroll/getDepts')
       .then((res) => {
         deptData.data = res.data.depts
@@ -127,7 +132,7 @@ export default defineComponent({
       .catch(() => {
         notification.error({ message: '出错啦', description: '无法获取部门列表，请联系管理员' })
       })
-    this.$http
+    axios
       .get('/enroll/getTurns')
       .then((res) => {
         turnData.data = res.data.turns
@@ -139,16 +144,52 @@ export default defineComponent({
     const queryEnroll = () => {
       // 注意, selectedTurn已经在Flask中封装好, 如果为-1, 则返回所有批次,
       // 即selectedTurn将有后端进行校验, 因此只需关注 selectedTurn
-      this.$http
+      axios
         .post('/enroll/getEnrollList', { turnId: parseInt(selectedTurn.value) })
         .then((res) => {
           enrollData.data = res.data.enrollCandidates
-          const deptName = deptData.data.find((p) => p.id === selectedDept.value).deptName
-          console.log('deptName', deptName)
-          queryData.data = enrollData.data.filter((p) => {
-            const test = deptName ? [p.firstChoice, p.secondChoice, p.thridChoice].includes(deptName) : true
-            return Object.values(p).includes(filterText.value) && test
+          // 这段代码会抛出异常，原因不详，暂时用原来的代替
+          // const deptName = deptData.data.find((p) =>  p.id === selectedDept.value).deptName
+          // queryData.data = enrollData.data.filter((p) => {
+          //   const test = deptName ? [p.firstChoice, p.secondChoice, p.thridChoice].includes(deptName) : true
+          //   return Object.values(p).includes(filterText.value) && test
+          // })
+          let deptName = ''
+          deptData.data.forEach((p) => {
+            if (p.id === selectedDept.value) {
+              deptName = p.deptName
+            }
           })
+          if (deptName) {
+            // TODO: 这里代码要重写！！
+            queryData.data = enrollData.data.filter((p) => {
+              if (
+                p.firstChoice === deptName ||
+                p.secondChoice === deptName ||
+                p.thridChoice === deptName
+              ) {
+                let keys = Object.keys(p)
+                let str = ''
+                keys.forEach((key) => {
+                  str = str + '' + p[key]
+                })
+                if (str.indexOf(filterText.value) > -1) {
+                  return p
+                }
+              }
+            })
+          } else {
+            queryData.data = enrollData.data.filter((p) => {
+              let keys = Object.keys(p)
+              let str = ''
+              keys.forEach((key) => {
+                str = str + '' + p[key]
+              })
+              if (str.indexOf(filterText.value) > -1) {
+                return p
+              }
+            })
+          }
         })
         .catch(() => {
           notification.error({ message: '出错啦', description: '无法获取报名数据，请联系管理员' })

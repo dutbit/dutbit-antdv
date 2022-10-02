@@ -107,6 +107,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import { reactive, ref } from 'vue'
 import { notification } from 'ant-design-vue'
 export default {
@@ -128,7 +129,7 @@ export default {
     let currentDeptId = -1
 
     const getDeptData = () => {
-      this.$http
+      axios
         .get('/enroll/getDepts')
         .then((response) => {
           deptData.data = response.data.depts
@@ -151,7 +152,7 @@ export default {
     }
     const handleCreateNewDept = () => {
       const dept = { deptName: newDeptName.value }
-      this.$http
+      axios
         .post('/enroll/createDept', { dept })
         .then((response) => {
           if (response.data.success)
@@ -172,7 +173,7 @@ export default {
     const handleEditCurrentDept = () => {
       const dept = getDeptById(currentDeptId)
       dept.deptName = newDeptName.value
-      this.$http
+      axios
         .post('/enroll/setDept', { dept })
         .then((response) => {
           if (response.data.success)
@@ -188,7 +189,7 @@ export default {
     }
     const deleteCurrentDept = (id) => {
       const dept = getDeptById(id)
-      this.$http
+      axios
         .post('/enroll/deleteDept', { dept })
         .then((response) => {
           if (response.data.success)
@@ -215,7 +216,7 @@ export default {
     let currentTurnId = -1
 
     const getTurnData = () => {
-      this.$http
+      axios
         .get('/enroll/getTurns')
         .then((response) => {
           turnData.data = response.data.turns
@@ -239,7 +240,7 @@ export default {
     }
     const handleCreateNewTurn = () => {
       const turn = { turnName: newTurnName.value }
-      this.$http
+      axios
         .post('/enroll/createTurn', { turn })
         .then((response) => {
           if (response.data.success)
@@ -260,7 +261,7 @@ export default {
     const handleEditCurrentTurn = () => {
       const turn = getTurnById(currentTurnId)
       turn.turnName = newTurnName.value
-      this.$http
+      axios
         .post('/enroll/setTurn', { turn })
         .then((response) => {
           if (response.data.success)
@@ -289,7 +290,7 @@ export default {
         return
       }
       turn.activated = 1
-      this.$http
+      axios
         .post('/enroll/setTurn', { turn })
         .then((response) => {
           if (response.data.success)
@@ -309,7 +310,7 @@ export default {
         return
       }
       turn.activated = 0
-      this.$http
+      axios
         .post('/enroll/setTurn', { turn })
         .then((response) => {
           if (response.data.success)
@@ -324,7 +325,7 @@ export default {
     }
     const deleteCurrentTurn = (id) => {
       const turn = getTurnById(id)
-      this.$http
+      axios
         .post('/enroll/deleteTurn', { turn })
         .then((response) => {
           if (response.data.success)
