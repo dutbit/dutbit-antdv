@@ -29,7 +29,7 @@ import axios from 'axios'
 export default defineComponent({
   setup() {
     const searchText = ref('')
-    const funService = (params) => axios.get('/point-man/get-records', { params })
+    const funService = (params) => axios.post('/point-man/', { ...params })
     const {
       data: dataAxios,
       loading: isLoading,
@@ -39,7 +39,7 @@ export default defineComponent({
     } = usePagination(funService, { formatResult: (res) => res.data })
 
     // computed
-    const lstRecords = computed(() => dataAxios.value?.rows) // ?. 是必需的
+    const lstRecords = computed(() => dataAxios.value?.lstPoints ) // ?. 是必需的
     const pagination = computed(() => ({
       total: dataAxios.value?.total,
       current: current.value,
@@ -49,9 +49,10 @@ export default defineComponent({
     }))
 
     // methods
-    const onTableChange = (pag, filters) =>
+    const onTableChange = (pag, filters) => {
       run({ current: pag.current, pageSize: pag.pageSize, searchText: searchText.value, ...filters })
-
+    }
+      
     return { searchText, isLoading, lstRecords, pagination, onTableChange }
   },
   data() {

@@ -13,6 +13,7 @@
     "axios": "^0.27.2",
     "crypto-js": "^4.1.1",
     "html2canvas": "^1.4.1",
+    "prettier": "^2.7.1",
     "vue": "^3.2.38",
     "vue-axios": "^3.4.1",
     "vue-request": "^1.2.4",

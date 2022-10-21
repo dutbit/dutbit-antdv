@@ -62,7 +62,10 @@ export default {
         { title: '行号', dataIndex: 'iLine' },
         { title: '姓名', dataIndex: 'name' },
         { title: '学号', dataIndex: 'stu_id' },
+        { title: '学院', dataIndex: 'faculty' },
+        { title: '性别', dataIndex: 'sex' },
         { title: '积分', dataIndex: 'points' },
+        { title: '备注', dataIndex: 'remark' }
       ],
       pagination: { total: 0, current: 0, pageSize: 50 },
       lstErrLines: [],
@@ -89,10 +92,10 @@ export default {
     handleUpload() {
       this.uploading = true // You can use any AJAX library you like
       this.$http
-        .post('/point-man/update-by-array', this.lstRecords)
+        .post('/point-man/upsert', { list: this.lstRecords })
         .then((res) => {
           this.uploading = false
-          notification.success({ message: res.data })
+          notification.success({ message: '上传成功!' })
         })
         .catch(() => {
           this.uploading = false
@@ -118,7 +121,7 @@ export default {
         else this.csv2array(reader.result)
       }
       reader.onerror = () => {
-        notification.error({ message: '浏览器FileReader错误', description: reader.error })
+        notification.error({ message: '浏览器FileReader错误', description: `${reader.error}\n请尝试更换浏览器` })
       }
       reader.readAsText(file)
     },
@@ -131,14 +134,15 @@ export default {
         const lstErrItems = []
         if (!/^\d+$/.test(splits[1])) lstErrItems.push('学号')
         if (!/^\d+$/.test(splits[2])) lstErrItems.push('积分')
-        if (splits.length !== 4 || lstErrItems.length)
+        if (!/^\d+$/.test(splits[3])) lstErrItems.push('类型ID')
+        if (splits.length !== 5 || lstErrItems.length)
           this.lstErrLines.push({ msg: `行${iLine}格式错误：${lstErrItems.join('，')}`, desc: splits.join('，') })
-        if (splits[3])
+        if (splits[4])
           this.lstRecords.push({
-            iLine,
             name: splits[0],
             stu_id: parseInt(splits[1]),
             points: parseInt(splits[2]),
+            type_id: parseInt(splits[3])
           })
       }
       if (!this.lstErrLines.length) notification.success({ message: `读取到${this.lstRecords.length}条数据` })
@@ -150,7 +154,7 @@ export default {
     },
   },
   mounted() {
-    this.$http.get('/point-man/row-total').then((res) => {
+    this.$http.get('/point-man/total').then((res) => {
       this.nRowsTotal = res.data.total
     })
   },

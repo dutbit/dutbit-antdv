@@ -60,6 +60,7 @@ export default {
   methods: {
     onLogin() {
       const payload = Object.assign({}, this.form)
+      window.localStorage.removeItem('Authorization') // 清除缓存, 避免登录异常.
       console.log(payload)
       if (!this.validateEmail(payload.email)) {
         notification.error({ message: '错误:', description: '邮箱格式不正确' })
@@ -69,6 +70,7 @@ export default {
       this.$http.post('/login', payload).then((res) => {
         console.log(res)
         if (res.data.success === true) {
+          
           window.localStorage.setItem('Authorization', res.data.token)
           setTimeout(() => {
             notification.success({message: '提示', description: '登录成功, 正在跳转至功能页...'})
