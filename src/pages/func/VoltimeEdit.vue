@@ -121,23 +121,24 @@ export default defineComponent({
       pageSize,
       run,
     } = usePagination(funService, {
-      formatResult: (res) => res.data.lstVoltimes,
+      formatResult: (res) => res.data,
     })
 
     // computed
-    const lstRecords = computed(() => dataAxios.value) // ?. 是必需的
+    const lstRecords = computed(() => dataAxios.value?.lstVoltimes) // ?. 是必需的
     const pagination = computed(() => ({
       total: dataAxios.value?.total,
-      current: current.value,
+      pageNum: current.value,
       pageSize: pageSize.value,
       showSizeChanger: true,
       showQuickJumper: true,
     }))
 
     // methods
-    const onTableChange = (pag, filters) =>
-      run({ current: pag.current, pageSize: pag.pageSize, searchText: searchText.value, ...filters })
-
+    const onTableChange = (pag, filters) => {
+      run({ pageNum: pag.current, pageSize: pag.pageSize, searchText: searchText.value, ...filters })
+    }
+      
     let infoModalVisible = ref(false)
     let currentRecord = reactive({
       data: {
@@ -170,9 +171,8 @@ export default defineComponent({
         notification.info({ message: '出错啦', description: '时长应是小数!' })
         return
       }
-      if (!/^\d{4}\/\d{1,2}\/\d{1,2}$/.test(currentRecord.data.date)) {
-        console.log(currentRecord.data.date)
-        notification.info({ message: '出错啦!', description: '日期必须是 yyyy/mm/dd 的格式!比如 2022/10/30' })
+      if (!/^\d{4}-\d{1,2}-\d{1,2}$/.test(currentRecord.data.date)) {
+        notification.info({ message: '出错啦!', description: '日期必须是 yyyy-mm-dd 的格式!比如 2022-10-30' })
         return
       }
       axios.post('/voltime-man/update', { ...currentRecord.data })
@@ -220,7 +220,7 @@ export default defineComponent({
   },
   methods: {
     onSearch() {
-      this.pagination.current = 1
+      this.pagination.pageNum = 1
       this.onTableChange(this.pagination)
     },
   },

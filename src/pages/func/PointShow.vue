@@ -42,7 +42,7 @@ export default defineComponent({
     const lstRecords = computed(() => dataAxios.value?.lstPoints ) // ?. 是必需的
     const pagination = computed(() => ({
       total: dataAxios.value?.total,
-      current: current.value,
+      pageNum: current.value,
       pageSize: pageSize.value,
       showSizeChanger: true,
       showQuickJumper: true,
@@ -50,7 +50,7 @@ export default defineComponent({
 
     // methods
     const onTableChange = (pag, filters) => {
-      run({ current: pag.current, pageSize: pag.pageSize, searchText: searchText.value, ...filters })
+      run({ pageNum: pag.current, pageSize: pag.pageSize, searchText: searchText.value, ...filters })
     }
       
     return { searchText, isLoading, lstRecords, pagination, onTableChange }
@@ -67,7 +67,7 @@ export default defineComponent({
   },
   methods: {
     onSearch() {
-      this.pagination.current = 1
+      this.pagination.pageNum = 1
       this.onTableChange(this.pagination)
     },
   },
