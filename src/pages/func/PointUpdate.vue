@@ -20,7 +20,9 @@
   <hr />
   <a-space size="small">
     <a-upload class="upload" :file-list="fileList" @remove="handleRemove" :before-upload="beforeUpload">
-      <a-button><UploadOutlined />选择文件</a-button>
+      <a-button>
+        <UploadOutlined />选择文件
+      </a-button>
     </a-upload>
     <a-button :disabled="fileList.length == 0" @click="onRefresh">刷新</a-button>
     <a-button type="primary" :disabled="!isR4Upload" :loading="uploading" @click="handleUpload">
@@ -32,13 +34,8 @@
     </span>
   </a-space>
   <hr />
-  <a-table
-    :columns="columns"
-    :dataSource="lstRecords"
-    :pagination="pagination"
-    row-key="iLine"
-    @change="onTableChange"
-  />
+  <a-table :columns="columns" :dataSource="lstRecords" :pagination="pagination" row-key="iLine"
+    @change="onTableChange" />
   <a-drawer v-model:visible="isSwDrawer" title="错误列表" placement="right" :width="800">
     <template v-for="errLine in lstErrLines" :key="errLine.id">
       <p>{{ errLine.msg }}</p>
@@ -137,13 +134,14 @@ export default {
         if (!/^\d+$/.test(splits[3])) lstErrItems.push('类型ID')
         if (splits.length !== 5 || lstErrItems.length)
           this.lstErrLines.push({ msg: `行${iLine}格式错误：${lstErrItems.join('，')}`, desc: splits.join('，') })
-        if (splits[4])
-          this.lstRecords.push({
-            name: splits[0],
-            stu_id: parseInt(splits[1]),
-            points: parseInt(splits[2]),
-            type_id: parseInt(splits[3])
-          })
+
+        this.lstRecords.push({
+          name: splits[0],
+          stu_id: parseInt(splits[1]),
+          points: parseInt(splits[2]),
+          type_id: parseInt(splits[3]),
+          remark: splits[4]
+        })
       }
       if (!this.lstErrLines.length) notification.success({ message: `读取到${this.lstRecords.length}条数据` })
       else notification.error({ message: `${this.lstErrLines.length}条数据存在格式错误` })
@@ -166,16 +164,20 @@ export default {
   color: gray;
   margin: 5px;
 }
+
 .upload {
   display: inline-flex;
   align-items: center;
 }
+
 .upload :deep(.ant-upload-list) {
   min-width: 15em;
 }
+
 .upload :deep(.ant-upload-list-item) {
   margin: 4px;
 }
+
 .upload :deep(.ant-upload-list-item-info) {
   padding-right: 24px;
 }

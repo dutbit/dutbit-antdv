@@ -158,7 +158,7 @@ export default defineComponent({
     })
     const showInfoModal = (id) => {
       infoModalVisible.value = true
-      currentRecord.data = JSON.parse(JSON.stringify(dataAxios.value.find(val => val.id == id)))
+      currentRecord.data = JSON.parse(JSON.stringify(dataAxios.value?.lstVoltimes.find(val => val.id == id)))
     }
     const editCurrentRecord = () => {
       for (let key in currentRecord.data) {
