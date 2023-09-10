@@ -92,7 +92,7 @@
     :destroyOnClose="true"
   >
     <span>请输入新的部门名称:</span>
-    <a-input v-model:value="newDeptName" show-count :maxlength="10"></a-input>
+    <a-input v-model:value="newDeptName" show-count :maxlength="20"></a-input>
   </a-modal>
   <a-modal
     :visible="createDeptVisible"
@@ -102,7 +102,7 @@
     :destroyOnClose="true"
   >
     <span>请输入新的部门名称:</span>
-    <a-input v-model:value="newDeptName" show-count :maxlength="10"></a-input>
+    <a-input v-model:value="newDeptName" show-count :maxlength="20"></a-input>
   </a-modal>
 </template>
 

@@ -1,11 +1,9 @@
 <template>
   <div class="container">
-    <template v-for="n in 10" :key="n">
+    <template v-for="n in 1" :key="n">
       <a-card title="Default size card" style="width: 300px">
         <template #extra><a href="#">more</a></template>
-        <p>card content {{ n }}</p>
-        <p>card content</p>
-        <p>card content</p>
+        <p>欢迎访问凌越网络工作室后台</p>
       </a-card>
       <br />
     </template>

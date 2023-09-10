@@ -36,7 +36,7 @@
     <a-layout-content style="margin-top: 64px; display: flex">
       <router-view />
     </a-layout-content>
-    <a-layout-footer style="text-align: center">DUTBIT</a-layout-footer>
+    <a-layout-footer style="text-align: center">凌越网络工作室</a-layout-footer>
   </a-layout>
 </template>
 

@@ -13,15 +13,6 @@
         </a-sub-menu>
         <a-sub-menu key="sub2">
           <template #title>
-            <span><LaptopOutlined /> subnav 2</span>
-          </template>
-          <a-menu-item key="5">option5</a-menu-item>
-          <a-menu-item key="6">option6</a-menu-item>
-          <a-menu-item key="7">option7</a-menu-item>
-          <a-menu-item key="8">option8</a-menu-item>
-        </a-sub-menu>
-        <a-sub-menu key="sub3">
-          <template #title>
             <span><CodeOutlined /> 控制台 </span>
           </template>
           <a-menu-item key="9"><router-link to="/func/enroll-man">报名系统</router-link></a-menu-item>
